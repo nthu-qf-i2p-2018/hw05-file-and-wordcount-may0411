@@ -4,10 +4,9 @@ import string
 import pickle
 
 def main(filename):
-
     lines = open(filename).readlines()
-
     all_words = []
+    
     for line in lines:
         line = line.strip()
         words = line.split()
