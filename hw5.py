@@ -1,36 +1,35 @@
 import csv
 import json
-import pickle
 import string
+import pickle
 
 def main(filename):
-    lines = open("i_have_a_dream.txt").readlines()
-    all_words =[]
-    
+
+    lines = open(filename).readlines()
+
+    all_words = []
     for line in lines:
         line = line.strip()
-        words = line.split()    
-        
+        words = line.split()
+
         for word in words:
             word = word.strip(string.punctuation)
-            all_words.append(word)        
-            
-            from collections import Counter
-            word_counter = Counter(all_words)
-            word_counter.most_common()
-                
-            with open('word_count.csv','w') as csv_file:
-            # create a csv writer from a file object (or descriptor)
-              writer = csv.writer(csv_file,delimiter=',')
-            # write table head #only one line
-              writer.writerow(['word', 'count'])
-            # write all (word, count) pair into the csv writer
-              writer.writerows(word_counter.most_common())
+            if word : 
+                all_words.append(word)
 
-            json.dump(word_counter.most_common(), open('word_count.json','w'))
+    from collections import Counter
+    counter = Counter(all_words)
+    counter.most_common()
+    
 
-            pickle.dump(word_counter, open('word_count.pkl','wb'))
-
+    with open("wordcount.csv", "w", newline='') as csv_file :  
+        writer = csv.writer(csv_file)
+        writer.writerow(['word', 'count'])
+        writer.writerows(counter.most_common())
+    
+    json.dump(counter.most_common() , open("wordcount.json","w"))
+ 
+    pickle.dump(counter, open("wordcount.pkl","wb"))
 
 if __name__ == '__main__':
     main("i_have_a_dream.txt")
